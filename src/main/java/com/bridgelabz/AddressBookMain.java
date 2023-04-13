@@ -1,7 +1,7 @@
 package com.bridgelabz;
 
 import java.io.*;
-import java.nio.file.Files;y
+import java.nio.file.Files;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,7 +22,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
-//uc14
+//uc15
 public class AddressBookMain {
 
     static HashMap<String , AddressBook> hashMap = new HashMap<String, AddressBook>();
@@ -214,6 +214,30 @@ public class AddressBookMain {
         }
     }
 
+    public <JSONParser> void writefromJson(){
+        JSONArray jsonPersons = new JSONArray();
+        hashMap.keySet().stream().forEach(bookname -> hashMap.get(bookname).getContactBook()
+                .stream().forEach(prsn -> jsonPersons.put((prsn.getContactJSON()))));
+
+        Path jsonPath = Paths.get("C:\\Users\\Sukanay\\IdeaProjects\\DAY28\\src\\main\\java\\com\\bridgelabz\\addressbook.json");
+        try {
+            Files.deleteIfExists(jsonPath);
+            Files.writeString(jsonPath, jsonPersons.toString(), StandardOpenOption.CREATE);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        JSONParser jsonParser = new JSONParser();
+        System.out.println("\nReading data from JSON file:");
+        try {
+            Object object = jsonParser.parse(Files.newBufferedReader(jsonPath));
+            JSONArray personsList = (JSONArray) object;
+            System.out.println(personsList);
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         AddressBookMain addressBookMain = new AddressBookMain();
         Scanner sc = new Scanner(System.in);
@@ -273,6 +297,8 @@ public class AddressBookMain {
                     addressBookMain.readFromFile();
                 }case 12 -> {
                     addressBookMain.readfromcsv();
+                }case 13 -> {
+                    addressBookMain.writefromJson();
                 }
             }
         }

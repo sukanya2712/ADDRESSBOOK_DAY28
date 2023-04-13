@@ -2,6 +2,7 @@ package com.bridgelabz;
 
 import java.util.Objects;
 
+
 public class Contact {
 
     private String FirstName;
@@ -16,6 +17,20 @@ public class Contact {
     public Contact() {
     }
 
+    public JSONObject getContactJSON() {
+        JSONObject jsonPerson = new JSONObject();
+        jsonPerson.put("firstName", getFirstName());
+        jsonPerson.put("lastName", getLastName());
+        jsonPerson.put("city", getCity());
+        jsonPerson.put("address", getAddress());
+        jsonPerson.put("state", getState());
+        jsonPerson.put("zip", getZip());
+        jsonPerson.put("phonenumber", getPhoneNumber());
+        jsonPerson.put("email", getEmail());
+        JSONObject jsonPersonObject = new JSONObject();
+        jsonPersonObject.put("person", jsonPerson);
+        return jsonPersonObject;
+    }
     public Contact(String firstName, String lastName, String city, String address, String state, String zip, String phoneNumber, String email) {
         FirstName = firstName;
         LastName = lastName;
